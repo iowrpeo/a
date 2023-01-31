@@ -12,6 +12,7 @@ from email.mime.text import MIMEText
 
 from client import Pica
 from util import *
+import os 
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8')
 
@@ -23,14 +24,20 @@ def download_comic(comic):
     res = []
     episodes = list(p.episodes(cid).json()["data"]["eps"]["docs"])
     episodes.reverse()
+    epl = [0]
+    epage = 0
+    nml = [i["title"] for i in episodes]
     for eid in episodes:
         page = 1
         while True:
             docs = json.loads(p.picture(cid, eid["order"], page).content)["data"]["pages"]["docs"]
+            num = json.loads(p.picture(cid, eid["order"], page).content)["data"]["pages"]["total"]
             page += 1
             if docs:
+                epage += num
                 res.extend(docs)
             else:
+                epl.append(epage)
                 break
     pics = list(map(lambda i: i['media']['fileServer'] + '/static/' + i['media']['path'], res))
 
@@ -56,7 +63,15 @@ def download_comic(comic):
     f = open('./downloaded.txt', 'ab')
     f.write((str(cid) + '\n').encode())
     f.close()
-
+    if(len(epl)>2):
+        print(epl)
+        plst = os.listdir(path)
+        for i in range(len(epl) - 1):
+            os.makedirs(r"{}\{}".format(path,convert_file_name(nml[i])))
+            for j in plst[epl[i]:epl[i+1]]:
+                shutil.copyfile(r"{}\{}".format(path,j),r"{}\{}\{}".format(path,convert_file_name(nml[i]),j))
+        for i in plst:
+            os.remove(r"{}\{}".format(path,i))
 
 p = Pica()
 p.login()
