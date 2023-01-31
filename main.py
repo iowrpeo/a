@@ -32,11 +32,12 @@ def download_comic(comic):
         while True:
             docs = json.loads(p.picture(cid, eid["order"], page).content)["data"]["pages"]["docs"]
             num = json.loads(p.picture(cid, eid["order"], page).content)["data"]["pages"]["total"]
+            print(num)
             page += 1
             if docs:
-                epage += num
                 res.extend(docs)
             else:
+                epage += num
                 epl.append(epage)
                 break
     pics = list(map(lambda i: i['media']['fileServer'] + '/static/' + i['media']['path'], res))
@@ -67,11 +68,11 @@ def download_comic(comic):
         print(epl)
         plst = os.listdir(path)
         for i in range(len(epl) - 1):
-            os.makedirs(r"{}\{}".format(path,convert_file_name(nml[i])))
+            os.makedirs(r"{}/{}".format(path,convert_file_name(nml[i])))
             for j in plst[epl[i]:epl[i+1]]:
-                shutil.copyfile(r"{}\{}".format(path,j),r"{}\{}\{}".format(path,convert_file_name(nml[i]),j))
+                shutil.copyfile(r"{}/{}".format(path,j),r"{}/{}/{}".format(path,convert_file_name(nml[i]),j))
         for i in plst:
-            os.remove(r"{}\{}".format(path,i))
+            os.remove(r"{}/{}".format(path,i))
 
 p = Pica()
 p.login()
