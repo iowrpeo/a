@@ -62,13 +62,15 @@ p = Pica()
 p.login()
 p.punch_in()
 
-comics = filter_comics(p.leaderboard()) + p.my_favourite()
+#comics = filter_comics(p.leaderboard()) + p.my_favourite()
+comics = filter_comics(p.my_favourite())
 for index in range(len(comics)):
     try:
         download_comic(comics[index])
         info = p.comic_info(comics[index]['_id'])
         if info["data"]['comic']['isFavourite']:
-            p.favourite(comics[index]["_id"])
+            pass
+            #p.favourite(comics[index]["_id"])
     except KeyError:
         print('download failed,' + str(index))
         continue
