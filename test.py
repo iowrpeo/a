@@ -26,5 +26,6 @@ with open("downloaded.txt","r") as f:
         #print(list(p.episodes(i).json()["data"]["eps"]["docs"]))
         print(r"{}->{}".format(i,p.comic_info(i)["data"]["comic"]["title"]))
         info = p.comic_info(i)
-        if not info["data"]['comic']['isFavourite']:
+        #if not info["data"]['comic']['isFavourite']:
+        if info["data"]['comic']['isFavourite']:
             p.favourite(i)
