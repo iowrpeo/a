@@ -95,8 +95,6 @@ if not os.path.exists("./zips"):
     os.mkdir('./zips')
 zip_file("./comics", "./zips")
 
-exit(0)
-
 email_account = os.environ["EMAIL_ACCOUNT"]
 smtpObj = smtplib.SMTP()
 smtpObj.connect(os.environ["EMAIL_SERVER_HOST"])
