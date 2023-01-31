@@ -32,7 +32,6 @@ def download_comic(comic):
         while True:
             docs = json.loads(p.picture(cid, eid["order"], page).content)["data"]["pages"]["docs"]
             num = json.loads(p.picture(cid, eid["order"], page).content)["data"]["pages"]["total"]
-            print(num)
             page += 1
             if docs:
                 res.extend(docs)
@@ -85,8 +84,7 @@ for index in range(len(comics)):
         download_comic(comics[index])
         info = p.comic_info(comics[index]['_id'])
         if info["data"]['comic']['isFavourite']:
-            pass
-            #p.favourite(comics[index]["_id"])
+            p.favourite(comics[index]["_id"])
     except KeyError:
         print('download failed,' + str(index))
         continue
